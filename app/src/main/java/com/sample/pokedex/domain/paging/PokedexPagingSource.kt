@@ -4,6 +4,8 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.sample.pokedex.domain.entity.PokemonEntity
 import com.sample.pokedex.domain.usecase.FetchPokemonsUseCase
+import java.lang.Exception
+import java.lang.IllegalStateException
 import javax.inject.Inject
 
 class PokedexPagingSource @Inject constructor(
@@ -15,11 +17,18 @@ class PokedexPagingSource @Inject constructor(
         val pokemonList = fetchPokemonsUseCase.execute(FetchPokemonsUseCase.Params(offset))
         val nextOffset = offset + pokemonList.size
 
-        return LoadResult.Page(
-            data = pokemonList,
-            prevKey = null,
-            nextKey = nextOffset
-        )
+        return if(offset == 0 && pokemonList.isEmpty()){
+            // error loading
+            LoadResult.Error(
+                IllegalStateException("No pokemon found")
+            )
+        } else {
+            LoadResult.Page(
+                data = pokemonList,
+                prevKey = null,
+                nextKey = if (nextOffset == offset) null else nextOffset
+            )
+        }
     }
 
     override fun getRefreshKey(state: PagingState<Int, PokemonEntity>): Int? {

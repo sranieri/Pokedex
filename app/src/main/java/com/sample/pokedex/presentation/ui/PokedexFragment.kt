@@ -5,19 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.CombinedLoadStates
 import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sample.pokedex.databinding.FragmentPokedexBinding
+import com.sample.pokedex.presentation.ui.dialog.TitleDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import io.uniflow.android.livedata.onEvents
 import io.uniflow.android.livedata.onStates
+import io.uniflow.core.flow.data.UIState
 import kotlinx.coroutines.launch
 
+@ExperimentalPagingApi
 @AndroidEntryPoint
 class PokedexFragment : Fragment() {
 
@@ -28,11 +33,20 @@ class PokedexFragment : Fragment() {
 
     private var adapterList = PokemonAdapter()
 
+    val listener: (CombinedLoadStates) -> Unit = { state ->
+        if (adapterList.snapshot().isEmpty())
+            viewModel.checkListState(state = state.source.refresh)
+        else {
+            binding.loading.isVisible = false
+            binding.pokemonRecycler.isVisible = true
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         viewBinding = FragmentPokedexBinding.inflate(inflater, container, false)
 
         return binding.root
@@ -41,22 +55,31 @@ class PokedexFragment : Fragment() {
     @ExperimentalPagingApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         initObservers()
 
         binding.pokemonRecycler.apply {
             layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
             this.adapter = adapterList.apply {
-                onItemSelected = { id ->
+                onItemSelected = { entity ->
                     findNavController().navigate(
-                        PokedexFragmentDirections.actionPokedexFragmentToPokemonDetailFragment(id)
+                        PokedexFragmentDirections.actionPokedexFragmentToPokemonDetailFragment(entity.id, entity.imageUrl)
                     )
                 }
             }
         }
 
         viewModel.resetState()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adapterList.addLoadStateListener(listener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        adapterList.removeLoadStateListener(listener)
     }
 
     override fun onDestroyView() {
@@ -66,18 +89,27 @@ class PokedexFragment : Fragment() {
 
     private fun initObservers() {
         onStates(viewModel) {
-            if(it is PokedexState.PokemonListState){
-                lifecycleScope.launch {
-                    adapterList.submitData(it.list)
+            when (it) {
+                is UIState.Loading -> {
+                    binding.loading.isVisible = true
+                    binding.pokemonRecycler.isVisible = false
                 }
-            }
-        }
-
-        onEvents(viewModel) {
-            if (it is PokedexEvent) {
-                when (it) {
-                    is PokedexEvent.GenericErrorEvent -> {
-                        Toast.makeText(context, "Generic error", Toast.LENGTH_SHORT).show()
+                is UIState.Failed -> {
+                    binding.loading.isVisible = false
+                    TitleDialogFragment.newInstance(
+                        title = "Generic Error"
+                    ).setPositiveButton("Retry") { dialog ->
+                        viewModel.loadPokemonList()
+                        dialog.dismiss()
+                    }.setNegativeButton("Cancel") { dialog ->
+                        dialog.dismiss()
+                    }.showDialog(childFragmentManager)
+                }
+                is PokedexState.PokemonListState -> {
+                    binding.loading.isVisible = false
+                    binding.pokemonRecycler.isVisible = true
+                    lifecycleScope.launch {
+                        adapterList.submitData(it.list)
                     }
                 }
             }

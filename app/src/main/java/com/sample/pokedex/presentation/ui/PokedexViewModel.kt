@@ -1,10 +1,7 @@
 package com.sample.pokedex.presentation.ui
 
 import androidx.lifecycle.viewModelScope
-import androidx.paging.ExperimentalPagingApi
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.cachedIn
+import androidx.paging.*
 import com.sample.pokedex.domain.paging.PokedexPagingSource
 import com.sample.pokedex.domain.usecase.FetchPokemonsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,7 +21,7 @@ class PokedexViewModel @Inject constructor(
         viewModelScope.launch {
             val currentState = getState()
             if (currentState !is PokedexState.PokemonListState) {
-                setState(UIState.Empty)
+                setState(UIState.Loading)
             }
         }
     }
@@ -55,6 +52,19 @@ class PokedexViewModel @Inject constructor(
                     setState(PokedexState.PokemonListState(list = value))
                 }
             )
+        }
+    }
+
+    fun checkListState(state: LoadState) {
+        viewModelScope.launch {
+            when (state) {
+                is LoadState.Loading -> setState(UIState.Loading)
+                is LoadState.Error -> setState(UIState.Failed())
+
+
+                else -> {
+                }
+            }
         }
     }
 }

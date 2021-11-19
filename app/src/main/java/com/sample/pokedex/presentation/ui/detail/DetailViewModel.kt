@@ -22,16 +22,11 @@ class DetailViewModel @Inject constructor(
     fun getPokemon(id: Int){
         viewModelScope.launch {
             runCatching {
-                val currentState = getState()
+                setState(UIState.Loading)
                 val pokemon = fetchPokemonUseCase.execute(FetchPokemonUseCase.Params(id))
-                val state = when(currentState){
-                    is PokemonState.PokemonInfo -> {
-                        currentState.copy(pokemon = pokemon)
-                    }
-                    else -> PokemonState.PokemonInfo(pokemon)
-                }
-                setState(state)
+                setState(PokemonState.PokemonInfo(pokemon))
             }.getOrElse {
+                setState(UIState.Failed())
             }
         }
     }

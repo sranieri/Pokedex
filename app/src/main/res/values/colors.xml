@@ -26,4 +26,5 @@
     <color name="dark_type_color">#121B39</color>
     <color name="steel_type_color">#9E9E9E</color>
     <color name="dragon_type_color">#6CB5B4</color>
+    <color name="mineShaft">#E2E1E1</color>
 </resources>

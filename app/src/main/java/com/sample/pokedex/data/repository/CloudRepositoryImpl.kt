@@ -26,7 +26,7 @@ class CloudRepositoryImpl @Inject constructor(
 
     override suspend fun getPokemonFromDb(id: Int): PokemonEntity? {
         return pokemonDao.getPokemonById(id)?.let {
-            val abilities = it.pokemon.abilities.mapNotNull { id ->
+            val abilities = it.abilities.mapNotNull { id ->
                 pokemonAbilityDao.getAbility(id)?.let { ability ->
                     AbilityEntity(
                         ability.id,
@@ -37,37 +37,37 @@ class CloudRepositoryImpl @Inject constructor(
                 }
             }
             PokemonEntity(
-                it.pokemon.id,
-                it.pokemon.orderNumber,
+                it.id,
+                it.orderNumber,
                 abilities,
-                it.pokemon.types,
-                it.pokemon.imageUrl,
-                it.pokemon.name,
-                it.pokemon.height,
-                it.pokemon.weight
+                it.types,
+                it.imageUrl,
+                it.name,
+                it.height,
+                it.weight
             )
         }
     }
 
     override suspend fun getPokemonsFromDb(offset: Int): List<PokemonEntity> {
         return pokemonDao.getPokemons(offset).map {
-            val abilities = it.abilities.map { ability ->
+            val abilities = it.abilities.map { id ->
                 AbilityEntity(
-                    ability.id,
-                    ability.name,
-                    ability.effect,
-                    ability.generation
+                    id,
+                    "",
+                    "",
+                    ""
                 )
             }
             PokemonEntity(
-                it.pokemon.id,
-                it.pokemon.orderNumber,
+                it.id,
+                it.orderNumber,
                 abilities,
-                it.pokemon.types,
-                it.pokemon.imageUrl,
-                it.pokemon.name,
-                it.pokemon.height,
-                it.pokemon.weight
+                it.types,
+                it.imageUrl,
+                it.name,
+                it.height,
+                it.weight
             )
         }
     }
