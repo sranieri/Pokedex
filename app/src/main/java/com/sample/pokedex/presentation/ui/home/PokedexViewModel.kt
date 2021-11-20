@@ -1,9 +1,8 @@
-package com.sample.pokedex.presentation.ui
+package com.sample.pokedex.presentation.ui.home
 
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.sample.pokedex.domain.paging.PokedexPagingSource
-import com.sample.pokedex.domain.usecase.FetchPokemonsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.uniflow.android.AndroidDataFlow
 import io.uniflow.core.coroutines.onFlow

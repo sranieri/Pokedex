@@ -6,22 +6,10 @@
 
     <fragment
         android:id="@+id/pokedexFragment"
-        android:name="com.sample.pokedex.presentation.ui.PokedexFragment"
+        android:name="com.sample.pokedex.presentation.ui.home.PokedexFragment"
         android:label="PokedexFragment" >
         <action
             android:id="@+id/action_pokedexFragment_to_pokemonDetailFragment"
             app:destination="@id/pokemonDetailFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/pokemonDetailFragment"
-        android:name="com.sample.pokedex.presentation.ui.detail.PokemonDetailFragment"
-        android:label="PokemonDetailFragment" >
-        <argument
-            android:name="pokemon_id"
-            app:argType="integer"
-            android:defaultValue="0" />
-        <argument
-            android:name="pokemon_img"
-            app:argType="string" />
     </fragment>
 </navigation>

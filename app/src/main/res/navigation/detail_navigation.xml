@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/pokemonDetailFragment">
+    <fragment
+        android:id="@+id/pokemonDetailFragment"
+        android:name="com.sample.pokedex.presentation.ui.detail.PokemonDetailFragment"
+        android:label="PokemonDetailFragment" >
+        <argument
+            android:name="pokemon_id"
+            app:argType="integer"
+            android:defaultValue="0" />
+        <argument
+            android:name="pokemon_img"
+            app:argType="string" />
+    </fragment>
+</navigation>

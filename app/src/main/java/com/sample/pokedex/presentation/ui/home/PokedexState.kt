@@ -1,4 +1,4 @@
-package com.sample.pokedex.presentation.ui
+package com.sample.pokedex.presentation.ui.home
 
 import androidx.paging.PagingData
 import com.sample.pokedex.domain.entity.PokemonEntity

@@ -1,4 +1,4 @@
-package com.sample.pokedex.presentation.ui
+package com.sample.pokedex.presentation.ui.home
 
 import io.uniflow.core.flow.data.UIEvent
 

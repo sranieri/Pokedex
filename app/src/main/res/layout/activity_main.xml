@@ -1,21 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:fitsSystemWindows="true"
+    tools:context=".PokedexActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+        android:fitsSystemWindows="true"
+        android:background="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:elevation="0dp"
+        app:elevation="0dp">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/toolbar_layout"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            android:fitsSystemWindows="true"
+            app:toolbarId="@id/toolbar">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/pokeballImage"
+                    android:layout_width="150dp"
+                    android:layout_height="200dp"
+                    android:alpha="0.5"
+                    android:tint="@color/pokeball_app_bar"
+                    android:layout_gravity="end"
+                    app:srcCompat="@drawable/pokeball" />
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    app:layout_collapseMode="pin"
+                    android:layout_gravity="bottom"
+                    app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                    app:layout_constraintBottom_toBottomOf="@id/pokeballImage"
+                    app:layout_constraintStart_toStartOf="parent">
+                    <TextView
+                        android:id="@+id/title"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginBottom="10dp"
+                        android:text="@string/app_name"
+                        android:textSize="30sp"
+                        android:textStyle="bold" />
+                </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:defaultNavHost="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:navGraph="@navigation/main_navigation" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

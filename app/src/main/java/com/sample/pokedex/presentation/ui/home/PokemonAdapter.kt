@@ -1,4 +1,4 @@
-package com.sample.pokedex.presentation.ui
+package com.sample.pokedex.presentation.ui.home
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

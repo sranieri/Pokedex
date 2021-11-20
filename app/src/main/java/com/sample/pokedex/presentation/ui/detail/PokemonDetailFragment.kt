@@ -4,19 +4,17 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.sample.pokedex.PokedexActivity
 import com.sample.pokedex.databinding.FragmentPokemonDetailBinding
 import com.sample.pokedex.presentation.ui.dialog.TitleDialogFragment
 import com.sample.pokedex.presentation.utils.getColorResByType
-import com.sample.pokedex.presentation.utils.getTypeDrawable
 import com.sample.pokedex.presentation.utils.setColorByPokemon
 import dagger.hilt.android.AndroidEntryPoint
 import io.uniflow.android.livedata.onStates
@@ -30,6 +28,11 @@ class PokemonDetailFragment : Fragment() {
 
     private val args: PokemonDetailFragmentArgs by navArgs()
     private val viewModel: DetailViewModel by viewModels()
+
+    companion object {
+        const val ARG_POKEMON_ID = "pokemon_id"
+        const val ARG_POKEMON_IMG = "pokemon_img"
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

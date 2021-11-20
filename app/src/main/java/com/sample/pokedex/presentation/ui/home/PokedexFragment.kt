@@ -1,10 +1,10 @@
-package com.sample.pokedex.presentation.ui
+package com.sample.pokedex.presentation.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -14,10 +14,12 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.sample.pokedex.PokedexActivity
 import com.sample.pokedex.databinding.FragmentPokedexBinding
+import com.sample.pokedex.presentation.ui.detail.DetailActivity
+import com.sample.pokedex.presentation.ui.detail.PokemonDetailFragment
 import com.sample.pokedex.presentation.ui.dialog.TitleDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
-import io.uniflow.android.livedata.onEvents
 import io.uniflow.android.livedata.onStates
 import io.uniflow.core.flow.data.UIState
 import kotlinx.coroutines.launch
@@ -62,9 +64,15 @@ class PokedexFragment : Fragment() {
             setHasFixedSize(true)
             this.adapter = adapterList.apply {
                 onItemSelected = { entity ->
-                    findNavController().navigate(
-                        PokedexFragmentDirections.actionPokedexFragmentToPokemonDetailFragment(entity.id, entity.imageUrl)
-                    )
+                    val intent =
+                        Intent(
+                            this@PokedexFragment.activity,
+                            DetailActivity::class.java
+                        ).apply {
+                            putExtra(PokemonDetailFragment.ARG_POKEMON_ID, entity.id)
+                            putExtra(PokemonDetailFragment.ARG_POKEMON_IMG, entity.imageUrl)
+                        }
+                    this@PokedexFragment.startActivity(intent)
                 }
             }
         }
