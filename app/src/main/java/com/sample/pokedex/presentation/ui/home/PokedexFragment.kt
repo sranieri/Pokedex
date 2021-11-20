@@ -14,7 +14,9 @@ import androidx.paging.CombinedLoadStates
 import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.appbar.AppBarLayout
 import com.sample.pokedex.PokedexActivity
+import com.sample.pokedex.R
 import com.sample.pokedex.databinding.FragmentPokedexBinding
 import com.sample.pokedex.presentation.ui.detail.DetailActivity
 import com.sample.pokedex.presentation.ui.detail.PokemonDetailFragment
@@ -23,6 +25,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.uniflow.android.livedata.onStates
 import io.uniflow.core.flow.data.UIState
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 @ExperimentalPagingApi
 @AndroidEntryPoint
@@ -105,8 +108,8 @@ class PokedexFragment : Fragment() {
                 is UIState.Failed -> {
                     binding.loading.isVisible = false
                     TitleDialogFragment.newInstance(
-                        title = "Generic Error"
-                    ).setPositiveButton("Retry") { dialog ->
+                        title = getString(R.string.generic_error)
+                    ).setPositiveButton(getString(R.string.retry)) { dialog ->
                         viewModel.loadPokemonList()
                         dialog.dismiss()
                     }.showDialog(childFragmentManager)

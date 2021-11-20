@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import com.sample.pokedex.databinding.PokemonTypeBinding
+import com.sample.pokedex.domain.entity.PokemonType
 import com.sample.pokedex.presentation.utils.getColorResByType
 import com.sample.pokedex.presentation.utils.getTypeDrawable
 
@@ -22,14 +23,14 @@ class PokemonTypeView @JvmOverloads constructor(
         binding = PokemonTypeBinding.inflate(inflater, this, true)
     }
 
-    fun updateColors(type: String) {
+    fun updateColors(type: PokemonType) {
         val colorResByType = getColorResByType(type)
         val color = ContextCompat.getColor(context, colorResByType)
         val img = getTypeDrawable(type)
 
         binding.typeCard.setCardBackgroundColor(color)
         binding.typeName.setChipBackgroundColorResource(colorResByType)
-        binding.typeName.text = type.uppercase()
+        binding.typeName.text = type.type.uppercase()
         binding.typeImg.setImageResource(img)
     }
 

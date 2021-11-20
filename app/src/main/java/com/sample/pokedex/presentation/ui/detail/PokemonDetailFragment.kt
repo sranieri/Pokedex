@@ -12,6 +12,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.sample.pokedex.PokedexActivity
+import com.sample.pokedex.R
 import com.sample.pokedex.databinding.FragmentPokemonDetailBinding
 import com.sample.pokedex.presentation.ui.dialog.TitleDialogFragment
 import com.sample.pokedex.presentation.utils.getColorResByType
@@ -55,7 +56,7 @@ class PokemonDetailFragment : Fragment() {
                         binding.pokemonName.text = name.replaceFirstChar { it.uppercase() }
                         binding.pokemonCard.setColorByPokemon(this)
 
-                        types.getOrNull(1)?.let { secondType ->
+                        getPokemonTypes().getOrNull(1)?.let { secondType ->
                             binding.secondTypeImg.apply {
                                 setColorFilter(ContextCompat.getColor(context, getColorResByType(secondType)))
                                 isVisible = true
@@ -63,7 +64,7 @@ class PokemonDetailFragment : Fragment() {
                         }
 
                         binding.typesContainer.apply {
-                            this@with.types.forEach { type ->
+                            this@with.getPokemonTypes().forEach { type ->
                                 addView(
                                     PokemonTypeView(context).apply {
                                         updateColors(type)
@@ -86,12 +87,13 @@ class PokemonDetailFragment : Fragment() {
                 is UIState.Failed -> {
                     binding.loading.isVisible = false
                     TitleDialogFragment.newInstance(
-                        title = "Generic Error"
-                    ).setPositiveButton("Retry") { dialog ->
+                        title = getString(R.string.generic_error)
+                    ).setPositiveButton(getString(R.string.retry)) { dialog ->
                         viewModel.getPokemon(args.pokemonId)
                         dialog.dismiss()
-                    }.setNegativeButton("Cancel") { dialog ->
+                    }.setNegativeButton(getString(R.string.cancel)) { dialog ->
                         dialog.dismiss()
+                        activity?.finish()
                     }.showDialog(childFragmentManager)
                 }
             }
