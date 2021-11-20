@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shp_rect_rounded"
-    tools:layout_margin="25dp">
+    android:background="@drawable/dialog_background">
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/title"
@@ -23,7 +22,6 @@
         app:autoSizeMaxTextSize="22sp"
         app:autoSizeMinTextSize="18sp"
         app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

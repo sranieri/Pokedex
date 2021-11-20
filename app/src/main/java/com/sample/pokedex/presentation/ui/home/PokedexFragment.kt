@@ -109,8 +109,6 @@ class PokedexFragment : Fragment() {
                     ).setPositiveButton("Retry") { dialog ->
                         viewModel.loadPokemonList()
                         dialog.dismiss()
-                    }.setNegativeButton("Cancel") { dialog ->
-                        dialog.dismiss()
                     }.showDialog(childFragmentManager)
                 }
                 is PokedexState.PokemonListState -> {

@@ -6,7 +6,10 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.transition.DrawableCrossFadeFactory
+import com.sample.pokedex.R
 import com.sample.pokedex.databinding.ViewholderPokemonBinding
 import com.sample.pokedex.domain.entity.PokemonEntity
 import com.sample.pokedex.presentation.utils.setColorByPokemon
@@ -42,12 +45,15 @@ class PokemonAdapter : PagingDataAdapter<PokemonEntity, PokemonAdapter.ViewHolde
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(entity: PokemonEntity) {
+            val factory = DrawableCrossFadeFactory.Builder().setCrossFadeEnabled(true).build()
             with(binding) {
                 pokemonCard.setColorByPokemon(entity)
                 pokemonName.text = entity.name.replaceFirstChar { it.uppercase() }
                 Glide.with(root.context)
                     .load(entity.imageUrl)
                     .apply(RequestOptions.centerInsideTransform())
+                    .transition(DrawableTransitionOptions.withCrossFade(factory))
+                    .placeholder(R.drawable.ditto_placeholder)
                     .into(binding.pokemonImg)
 
                 root.setOnClickListener {
