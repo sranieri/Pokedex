@@ -19,7 +19,7 @@ class PokedexViewModel @Inject constructor(
         //set initial state
         viewModelScope.launch {
             val currentState = getState()
-            if (currentState !is PokedexState.PokemonListState) {
+            if (currentState !is PokemonListState) {
                 setState(UIState.Loading)
             }
         }
@@ -29,7 +29,7 @@ class PokedexViewModel @Inject constructor(
     fun resetState(){
         viewModelScope.launch {
             val currentState = getState()
-            if(currentState !is PokedexState.PokemonListState){
+            if(currentState !is PokemonListState){
                 loadPokemonList()
             }
         }
@@ -48,7 +48,7 @@ class PokedexViewModel @Inject constructor(
             onFlow(
                 flow = { flow },
                 doAction = { value ->
-                    setState(PokedexState.PokemonListState(list = value))
+                    setState(PokemonListState(list = value))
                 }
             )
         }

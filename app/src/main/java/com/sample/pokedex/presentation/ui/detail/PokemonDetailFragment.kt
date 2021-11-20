@@ -44,7 +44,7 @@ class PokemonDetailFragment : Fragment() {
 
         onStates(viewModel) {
             when (it) {
-                is PokemonState.PokemonInfo -> {
+                is PokemonInfo -> {
                     binding.loading.isVisible = false
                     with(it.pokemon){
                         val order = if(orderNumber < 1000){

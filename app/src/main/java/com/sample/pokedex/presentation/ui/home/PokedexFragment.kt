@@ -114,7 +114,7 @@ class PokedexFragment : Fragment() {
                         dialog.dismiss()
                     }.showDialog(childFragmentManager)
                 }
-                is PokedexState.PokemonListState -> {
+                is PokemonListState -> {
                     binding.loading.isVisible = false
                     binding.pokemonRecycler.isVisible = true
                     lifecycleScope.launch {

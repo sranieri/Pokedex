@@ -24,7 +24,7 @@ class DetailViewModel @Inject constructor(
             runCatching {
                 setState(UIState.Loading)
                 val pokemon = fetchPokemonUseCase.execute(FetchPokemonUseCase.Params(id))
-                setState(PokemonState.PokemonInfo(pokemon))
+                setState(PokemonInfo(pokemon))
             }.getOrElse {
                 setState(UIState.Failed())
             }
