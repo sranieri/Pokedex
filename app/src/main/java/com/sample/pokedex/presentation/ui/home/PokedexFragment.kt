@@ -63,8 +63,26 @@ class PokedexFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
 
+        binding.fab.setOnClickListener {
+            binding.pokemonRecycler.smoothScrollToPosition(0)
+        }
+
         binding.pokemonRecycler.apply {
             setHasFixedSize(true)
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    // used minimum coefficient of 10 to prevent
+                    // button from appear/disappear in strange situations
+                    if (dy > 10 && binding.fab.isShown) {
+                        binding.fab.hide()
+                    }
+
+                    if (dy < -10 && !binding.fab.isShown) {
+                        binding.fab.show()
+                    }
+                }
+            })
             layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false).apply {
                 spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                     override fun getSpanSize(position: Int): Int {
@@ -80,7 +98,7 @@ class PokedexFragment : Fragment() {
                 header = PokemonLoadingStateAdapter {
                     adapterList.retry()
                 },
-                footer = PokemonLoadingStateAdapter{
+                footer = PokemonLoadingStateAdapter {
                     adapterList.retry()
                 }
             )
@@ -89,14 +107,14 @@ class PokedexFragment : Fragment() {
         viewModel.resetState()
     }
 
-    fun onItemSelected(item: PokemonEntity){
+    fun onItemSelected(item: PokemonEntity) {
         val intent = Intent(
-                this@PokedexFragment.activity,
-                DetailActivity::class.java
-            ).apply {
-                putExtra(PokemonDetailFragment.ARG_POKEMON_ID, item.id)
-                putExtra(PokemonDetailFragment.ARG_POKEMON_IMG, item.imageUrl)
-            }
+            this@PokedexFragment.activity,
+            DetailActivity::class.java
+        ).apply {
+            putExtra(PokemonDetailFragment.ARG_POKEMON_ID, item.id)
+            putExtra(PokemonDetailFragment.ARG_POKEMON_IMG, item.imageUrl)
+        }
         this@PokedexFragment.startActivity(intent)
     }
 
