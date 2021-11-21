@@ -13,20 +13,31 @@ class PokedexPagingSource @Inject constructor(
 ): PagingSource<Int, PokemonEntity>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PokemonEntity> {
-        val offset = params.key ?: 0
-        val pokemonList = fetchPokemonsUseCase.execute(FetchPokemonsUseCase.Params(offset))
-        val nextOffset = offset + pokemonList.size
+        return runCatching {
+            val offset = params.key ?: 0
+            val pokemonList = fetchPokemonsUseCase.execute(FetchPokemonsUseCase.Params(offset))
+            val nextOffset = offset + pokemonList.size
 
-        return if(offset == 0 && pokemonList.isEmpty()){
+            if(offset == 0 && pokemonList.isEmpty()){
+                // error loading
+                LoadResult.Error(
+                    IllegalStateException("No pokémons found")
+                )
+            } else if (nextOffset == offset) {
+                LoadResult.Error(
+                    IllegalStateException("Not found other pokémons")
+                )
+            } else {
+                LoadResult.Page(
+                    data = pokemonList,
+                    prevKey = null,
+                    nextKey = if (nextOffset == offset) null else nextOffset
+                )
+            }
+        }.getOrElse {
             // error loading
             LoadResult.Error(
-                IllegalStateException("No pokemon found")
-            )
-        } else {
-            LoadResult.Page(
-                data = pokemonList,
-                prevKey = null,
-                nextKey = if (nextOffset == offset) null else nextOffset
+                IllegalStateException("Generic error")
             )
         }
     }

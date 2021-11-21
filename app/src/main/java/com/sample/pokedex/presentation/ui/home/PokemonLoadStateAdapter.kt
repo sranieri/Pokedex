@@ -33,6 +33,7 @@ class PokemonLoadingStateAdapter(private val retry: () -> Unit) :
                     binding.errorMsg.text = loadState.error.localizedMessage
                     binding.errorMsg.isVisible = true
                     binding.retryBtn.isVisible = true
+                    binding.progressBar.isVisible = false
                 }
                 else -> {
                     binding.progressBar.isVisible = false
