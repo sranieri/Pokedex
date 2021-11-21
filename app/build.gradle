@@ -98,5 +98,8 @@ dependencies {
     // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$room_version"
 
-    implementation 'de.hdodenhof:circleimageview:3.1.0'
+    // required to avoid crash on Android 12 API 31
+    implementation 'androidx.work:work-runtime-ktx:2.7.0'
+
+    implementation 'androidx.core:core-splashscreen:1.0.0-alpha01'
 }
