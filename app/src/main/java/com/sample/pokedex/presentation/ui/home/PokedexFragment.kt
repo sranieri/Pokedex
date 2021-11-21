@@ -63,8 +63,11 @@ class PokedexFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         initObservers()
 
-        binding.fab.setOnClickListener {
-            binding.pokemonRecycler.smoothScrollToPosition(0)
+        binding.fab.apply {
+            bringToFront()
+            setOnClickListener {
+                binding.pokemonRecycler.smoothScrollToPosition(0)
+            }
         }
 
         binding.pokemonRecycler.apply {
