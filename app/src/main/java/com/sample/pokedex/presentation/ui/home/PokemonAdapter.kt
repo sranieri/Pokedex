@@ -15,8 +15,20 @@ import com.sample.pokedex.domain.entity.PokemonEntity
 import com.sample.pokedex.presentation.utils.setColorByPokemon
 import java.util.*
 
-class PokemonAdapter : PagingDataAdapter<PokemonEntity, PokemonAdapter.ViewHolder>(DiffCallback()) {
-    var onItemSelected: ((PokemonEntity) -> Unit)? = null
+class PokemonAdapter(val onItemSelected: ((PokemonEntity) -> Unit)) : PagingDataAdapter<PokemonEntity, PokemonAdapter.ViewHolder>(DiffCallback()) {
+
+    companion object{
+        const val LOADING_VIEW_TYPE = 0
+        const val POKEMON_TYPE = 1
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return if (position == itemCount) {
+            LOADING_VIEW_TYPE
+        } else {
+            POKEMON_TYPE
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder.from(parent, onItemSelected)
@@ -40,7 +52,7 @@ class PokemonAdapter : PagingDataAdapter<PokemonEntity, PokemonAdapter.ViewHolde
 
     class ViewHolder(
         val binding: ViewholderPokemonBinding,
-        val onItemSelected: ((PokemonEntity) -> Unit)? = null
+        val onItemSelected: ((PokemonEntity) -> Unit)
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -57,13 +69,13 @@ class PokemonAdapter : PagingDataAdapter<PokemonEntity, PokemonAdapter.ViewHolde
                     .into(binding.pokemonImg)
 
                 root.setOnClickListener {
-                    onItemSelected?.invoke(entity)
+                    onItemSelected.invoke(entity)
                 }
             }
         }
 
         companion object {
-            fun from(parent: ViewGroup, onItemSelected: ((PokemonEntity) -> Unit)? = null): ViewHolder =
+            fun from(parent: ViewGroup, onItemSelected: ((PokemonEntity) -> Unit)): ViewHolder =
                 ViewHolder(
                     ViewholderPokemonBinding.inflate(
                         LayoutInflater.from(parent.context),

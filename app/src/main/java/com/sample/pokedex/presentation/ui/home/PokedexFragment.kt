@@ -18,6 +18,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.sample.pokedex.PokedexActivity
 import com.sample.pokedex.R
 import com.sample.pokedex.databinding.FragmentPokedexBinding
+import com.sample.pokedex.domain.entity.PokemonEntity
 import com.sample.pokedex.presentation.ui.detail.DetailActivity
 import com.sample.pokedex.presentation.ui.detail.PokemonDetailFragment
 import com.sample.pokedex.presentation.ui.dialog.TitleDialogFragment
@@ -36,7 +37,7 @@ class PokedexFragment : Fragment() {
 
     private val viewModel: PokedexViewModel by viewModels()
 
-    private var adapterList = PokemonAdapter()
+    private var adapterList = PokemonAdapter(::onItemSelected)
 
     val listener: (CombinedLoadStates) -> Unit = { state ->
         if (adapterList.snapshot().isEmpty())
@@ -63,24 +64,40 @@ class PokedexFragment : Fragment() {
         initObservers()
 
         binding.pokemonRecycler.apply {
-            layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false)
             setHasFixedSize(true)
-            this.adapter = adapterList.apply {
-                onItemSelected = { entity ->
-                    val intent =
-                        Intent(
-                            this@PokedexFragment.activity,
-                            DetailActivity::class.java
-                        ).apply {
-                            putExtra(PokemonDetailFragment.ARG_POKEMON_ID, entity.id)
-                            putExtra(PokemonDetailFragment.ARG_POKEMON_IMG, entity.imageUrl)
+            layoutManager = GridLayoutManager(context, 2, RecyclerView.VERTICAL, false).apply {
+                spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                    override fun getSpanSize(position: Int): Int {
+                        return when (adapterList.getItemViewType(position)) {
+                            PokemonAdapter.LOADING_VIEW_TYPE -> spanCount
+                            PokemonAdapter.POKEMON_TYPE -> 1
+                            else -> -1
                         }
-                    this@PokedexFragment.startActivity(intent)
+                    }
                 }
             }
+            this.adapter = adapterList.withLoadStateHeaderAndFooter(
+                header = PokemonLoadingStateAdapter {
+                    adapterList.retry()
+                },
+                footer = PokemonLoadingStateAdapter{
+                    adapterList.retry()
+                }
+            )
         }
 
         viewModel.resetState()
+    }
+
+    fun onItemSelected(item: PokemonEntity){
+        val intent = Intent(
+                this@PokedexFragment.activity,
+                DetailActivity::class.java
+            ).apply {
+                putExtra(PokemonDetailFragment.ARG_POKEMON_ID, item.id)
+                putExtra(PokemonDetailFragment.ARG_POKEMON_IMG, item.imageUrl)
+            }
+        this@PokedexFragment.startActivity(intent)
     }
 
     override fun onResume() {

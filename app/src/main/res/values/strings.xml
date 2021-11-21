@@ -2,6 +2,7 @@
     <string name="app_name">Pokédex</string>
     <string name="retry">Retry</string>
     <string name="ok">OK</string>
+    <string name="error">Error</string>
     <string name="cancel">Cancel</string>
     <string name="generic_error">Generic error</string>
     <string name="no_internet_connection">No internet connection</string>
