@@ -37,18 +37,19 @@ android {
 }
 
 dependencies {
-    def room_version = "2.3.0"
-    def moshi_version = "1.12.0"
+    def room_version = "2.4.1"
+    def moshi_version = "1.13.0"
     def paging_version = "3.1.0"
     def retrofit2 = "2.9.0"
     def okhttp3 = "4.9.1"
     def uniflow_version = "1.0.10"
+    def koin_version = "3.1.5"
 
     // Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
-    implementation 'androidx.navigation:navigation-fragment-ktx:2.4.0'
-    implementation 'androidx.navigation:navigation-ui-ktx:2.4.0'
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -83,7 +84,7 @@ dependencies {
     implementation "org.uniflow-kt:uniflow-saferesult:$uniflow_version"
     implementation "org.uniflow-kt:uniflow-arrow:$uniflow_version"
 
-    implementation "androidx.paging:paging-runtime:$paging_version"
+    implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
@@ -97,6 +98,6 @@ dependencies {
     implementation 'androidx.core:core-splashscreen:1.0.0-beta01'
 
     //koin
-    implementation "io.insert-koin:koin-core:3.1.5"
-    implementation "io.insert-koin:koin-android:3.1.5"
+    implementation "io.insert-koin:koin-core:$koin_version"
+    implementation "io.insert-koin:koin-android:$koin_version"
 }
