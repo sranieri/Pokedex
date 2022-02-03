@@ -9,9 +9,8 @@ import com.sample.pokedex.domain.entity.PokemonListEntity
 import com.sample.pokedex.domain.repository.CloudRepository
 import com.sample.pokedex.presentation.model.Pokemon
 import com.sample.pokedex.presentation.model.PokemonAbility
-import javax.inject.Inject
 
-class CloudRepositoryImpl @Inject constructor(
+class CloudRepositoryImpl(
     val cloudDataSource: CloudDataSource,
     val pokemonDao: PokemonDao,
     val pokemonAbilityDao: PokemonAbilityDao

@@ -5,9 +5,8 @@ import com.sample.pokedex.domain.entity.AbilityEntity
 import com.sample.pokedex.domain.entity.PokemonEntity
 import com.sample.pokedex.presentation.api.response.AbilityRemote
 import com.sample.pokedex.presentation.api.response.PokemonRemote
-import javax.inject.Inject
 
-class PokemonEntityMapper @Inject constructor() {
+class PokemonEntityMapper {
 
     fun fromRemote(remote: PokemonRemote): PokemonEntity = with(remote){
         val pokemonAbilities = this.abilities?.map {

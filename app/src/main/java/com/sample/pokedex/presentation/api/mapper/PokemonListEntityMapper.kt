@@ -2,9 +2,8 @@ package com.sample.pokedex.presentation.api.mapper
 
 import com.sample.pokedex.domain.entity.PokemonListEntity
 import com.sample.pokedex.presentation.api.response.PokemonListRemote
-import javax.inject.Inject
 
-class PokemonListEntityMapper @Inject constructor() {
+class PokemonListEntityMapper {
 
     fun fromRemote(remote: PokemonListRemote): List<PokemonListEntity> = with(remote) {
         this.results?.map {

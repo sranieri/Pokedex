@@ -1,9 +1,17 @@
 package com.sample.pokedex
 
 import android.app.Application
-import androidx.multidex.MultiDexApplication
-import dagger.hilt.android.HiltAndroidApp
+import com.sample.pokedex.di.module.*
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
 
-@HiltAndroidApp
-class MyApplication: MultiDexApplication() {
+class MyApplication: Application() {
+
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            androidContext(this@MyApplication)
+            modules(listOf(appModule, dataSourceModule, repoModule, useCaseModule, viewModelModule))
+        }
+    }
 }

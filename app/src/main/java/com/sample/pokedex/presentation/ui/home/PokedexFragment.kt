@@ -7,35 +7,29 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.appbar.AppBarLayout
-import com.sample.pokedex.PokedexActivity
 import com.sample.pokedex.R
 import com.sample.pokedex.databinding.FragmentPokedexBinding
 import com.sample.pokedex.domain.entity.PokemonEntity
 import com.sample.pokedex.presentation.ui.detail.DetailActivity
 import com.sample.pokedex.presentation.ui.detail.PokemonDetailFragment
 import com.sample.pokedex.presentation.ui.dialog.TitleDialogFragment
-import dagger.hilt.android.AndroidEntryPoint
 import io.uniflow.android.livedata.onStates
 import io.uniflow.core.flow.data.UIState
 import kotlinx.coroutines.launch
-import kotlin.math.abs
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalPagingApi
-@AndroidEntryPoint
 class PokedexFragment : Fragment() {
 
     private var viewBinding: FragmentPokedexBinding? = null
     private val binding get() = viewBinding!!
 
-    private val viewModel: PokedexViewModel by viewModels()
+    private val viewModel: PokedexViewModel by viewModel()
 
     private var adapterList = PokemonAdapter(::onItemSelected)
 

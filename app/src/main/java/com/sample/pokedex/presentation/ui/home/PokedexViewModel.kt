@@ -3,16 +3,14 @@ package com.sample.pokedex.presentation.ui.home
 import androidx.lifecycle.viewModelScope
 import androidx.paging.*
 import com.sample.pokedex.domain.paging.PokedexPagingSource
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.sample.pokedex.domain.usecase.FetchPokemonsUseCase
 import io.uniflow.android.AndroidDataFlow
 import io.uniflow.core.coroutines.onFlow
 import io.uniflow.core.flow.data.UIState
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class PokedexViewModel @Inject constructor(
-    private val pokedexPagingSource: PokedexPagingSource
+class PokedexViewModel(
+    private val fetchPokemonsUseCase: FetchPokemonsUseCase
 ) : AndroidDataFlow() {
 
     init {
@@ -40,7 +38,7 @@ class PokedexViewModel @Inject constructor(
         val flow = Pager(
             PagingConfig(pageSize = 5)
         ) {
-            pokedexPagingSource
+            PokedexPagingSource(fetchPokemonsUseCase)
         }.flow
             .cachedIn(viewModelScope)
         // Launch a job

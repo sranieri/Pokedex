@@ -4,11 +4,8 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.sample.pokedex.domain.entity.PokemonEntity
 import com.sample.pokedex.domain.usecase.FetchPokemonsUseCase
-import java.lang.Exception
-import java.lang.IllegalStateException
-import javax.inject.Inject
 
-class PokedexPagingSource @Inject constructor(
+class PokedexPagingSource(
     val fetchPokemonsUseCase: FetchPokemonsUseCase
 ): PagingSource<Int, PokemonEntity>() {
 

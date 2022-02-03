@@ -4,9 +4,8 @@ import com.sample.pokedex.domain.entity.PokemonEntity
 import com.sample.pokedex.domain.repository.CloudRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import javax.inject.Inject
 
-class FetchPokemonUseCase @Inject constructor(
+class FetchPokemonUseCase(
     val repository: CloudRepository
 ) {
 

@@ -8,9 +8,8 @@ import com.sample.pokedex.presentation.api.CloudApi
 import com.sample.pokedex.presentation.api.mapper.PokemonEntityMapper
 import com.sample.pokedex.presentation.api.mapper.PokemonListEntityMapper
 import com.sample.pokedex.presentation.api.response.PokemonListRemote
-import javax.inject.Inject
 
-class CloudDataSourceImpl @Inject constructor(
+class CloudDataSourceImpl(
     val api: CloudApi,
     val pokemonMapper: PokemonEntityMapper,
     val pokemonListEntityMapper: PokemonListEntityMapper
